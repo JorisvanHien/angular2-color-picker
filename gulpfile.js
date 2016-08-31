@@ -27,7 +27,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('compile', function () {
-    var r = gulp.src(['src/**/*.ts', 'node_modules/@types/**/*.d.ts])
+    var r = gulp.src(['src/**/*.ts', 'node_modules/@types/**/*.d.ts'])
             .pipe(inlineNg2Template({base: '/lib'}))
             .pipe(sourcemaps.init())
             .pipe(tsc(tscConfig.compilerOptions))
@@ -39,7 +39,7 @@ gulp.task('compile', function () {
 });
 
 gulp.task('compile:index', function () {
-    var r = gulp.src(['index.ts', 'node_modules/@types/**/*.d.ts])
+    var r = gulp.src(['index.ts', 'node_modules/@types/**/*.d.ts'])
             .pipe(sourcemaps.init())
             .pipe(tsc(tscConfig.compilerOptions))
     r.dts.pipe(gulp.dest('.'));
