@@ -82,6 +82,7 @@ export declare class DialogComponent implements OnInit, AfterViewInit {
     private arrowTop;
     hueSlider: any;
     alphaSlider: any;
+    dialogElement: any;
     constructor(el: ElementRef, service: ColorPickerService);
     setDialog(instance: any, elementRef: ElementRef, color: any, cpPosition: string, cpPositionOffset: string, cpPositionRelativeToArrow: boolean, cpOutputFormat: string, cpCancelButton: boolean, cpCancelButtonClass: string, cpCancelButtonText: string, cpHeight: string, cpWidth: string): void;
     updateDialog(color: any, cpHeight: string, cpWidth: string): void;
