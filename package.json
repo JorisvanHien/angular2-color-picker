@@ -16,14 +16,10 @@
     "zone.js": "^0.6.25"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@types/core-js": "^0.9.32",
     "@types/jasmine": "^2.2.33",
     "@types/node": "^6.0.38",
-    "concurrently": "^2.2.0",
-=======
     "concurrently": "^3.0.0",
->>>>>>> master
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-inline-ng2-template": "^3.0.0",
@@ -34,12 +30,7 @@
     "gulp-uglify": "^2.0.0",
     "lite-server": "^2.2.2",
     "run-sequence": "^1.2.2",
-<<<<<<< HEAD
-    "typescript": "^2.0.2"
-=======
-    "typescript": "^2.0.3",
-    "typings": "^1.4.0"
->>>>>>> master
+    "typescript": "^2.0.3"
   },
   "files":[
       "lib/*",
