@@ -486,6 +486,9 @@ export class DialogComponent implements OnInit {
             this.left = boxDirective.left;
             this.position = 'fixed';
         }
+        if (!this.cpWidth) {
+          this.cpWidth = boxDirective.width;
+        }
         if (this.cpPosition === 'left') {
             this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
             this.left -= this.cpWidth + this.dialogArrowSize - 2;
