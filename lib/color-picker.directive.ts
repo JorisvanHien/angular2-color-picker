@@ -219,11 +219,11 @@ export class SliderDirective {
               </div>
               <div class="right">
                   <div *ngIf="cpAlphaChannel==='disabled'" style="height: 18px;"></div>
-            
+
                   <div [slider] [rgX]="1" (newValue)="setHue($event)" class="hue" #hueSlider>
                       <div [style.left.px]="slider.h" class="cursor"></div>
                   </div>
-            
+
                   <div [hidden]="cpAlphaChannel==='disabled'" [slider] [style.background-color]="alphaSliderColor" [rgX]="1" (newValue)="setAlpha($event)" class="alpha" #alphaSlider>
                       <div [style.left.px]="slider.a" class="cursor"></div>
                   </div>
@@ -273,11 +273,11 @@ export class SliderDirective {
              <div *ngFor="let color of cpPresetColors" class="preset-color" [style.backgroundColor]="color" (click)="setColorFromString(color)"></div>
           </div>
 
-          <div class="button-area">
+          <div *ngIf="cpOKButton || cpCancelButton" class="button-area">
               <button *ngIf="cpOKButton" type="button" class="{{cpOKButtonClass}}" (click)="oKColor()">{{cpOKButtonText}}</button>
               <button *ngIf="cpCancelButton" type="button" class="{{cpCancelButtonClass}}" (click)="cancelColor()">{{cpCancelButtonText}}</button>
           </div>
-  
+
       </div>
     `,
     styles: [`
@@ -374,6 +374,7 @@ export class DialogComponent implements OnInit {
 
     ngOnInit() {
         if (!this.cpWidth) {
+          console.log(this.directiveElementRef.nativeElement.offsetWidth);
             this.cpWidth = this.directiveElementRef.nativeElement.offsetWidth;
         }
         let alphaWidth = this.alphaSlider.nativeElement.offsetWidth;
