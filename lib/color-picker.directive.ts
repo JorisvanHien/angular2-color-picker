@@ -373,6 +373,9 @@ export class DialogComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (!this.cpWidth) {
+            this.cpWidth = this.directiveElementRef.nativeElement.offsetWidth;
+        }
         let alphaWidth = this.alphaSlider.nativeElement.offsetWidth;
         let hueWidth = this.hueSlider.nativeElement.offsetWidth;
         this.sliderDimMax = new SliderDimension(hueWidth, this.cpWidth, 130, alphaWidth);
