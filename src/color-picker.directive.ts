@@ -45,7 +45,6 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: any): void {
-      console.log(changes);
         if (changes.cpToggle) {
             if (changes.cpToggle.currentValue) this.openDialog();
             if (!changes.cpToggle.currentValue && this.dialog) this.dialog.closeColorPicker();
@@ -59,11 +58,6 @@ export class ColorPickerDirective implements OnInit, OnChanges {
 
             }
             this.ignoreChanges = false;
-        }
-        if (changes.presetLabel || changes.presetColors) {
-            if (this.dialog) {
-              this.dialog.setPresetConfig(changes.presetLabel, changes.presetColors);
-            }
         }
     }
 
