@@ -45,6 +45,7 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: any): void {
+      console.log(changes);
         if (changes.cpToggle) {
             if (changes.cpToggle.currentValue) this.openDialog();
             if (!changes.cpToggle.currentValue && this.dialog) this.dialog.closeColorPicker();
@@ -58,6 +59,11 @@ export class ColorPickerDirective implements OnInit, OnChanges {
 
             }
             this.ignoreChanges = false;
+        }
+        if (changes.presetLabel || changes.presetColors) {
+            if (this.dialog) {
+              this.dialog.setPresetConfig(changes.presetLabel, changes.presetColors);
+            }
         }
     }
 
@@ -311,6 +317,11 @@ export class DialogComponent implements OnInit {
         this.initialColor = color;
     }
 
+    setPresetConfig(cpPresetLabel: string, cpPresetColors: Array<string>) {
+      this.cpPresetLabel = cpPresetLabel;
+      this.cpPresetColors = cpPresetColors;
+    }
+
     openDialog(color: any, emit: boolean = true) {
         this.setInitialColor(color);
         this.setColorFromString(color, emit);
@@ -409,9 +420,6 @@ export class DialogComponent implements OnInit {
             this.top = boxDirective.top;
             this.left = boxDirective.left;
             this.position = 'fixed';
-        }
-        if (!this.cpWidth) {
-          this.cpWidth = boxDirective.width;
         }
         if (this.cpPosition === 'left') {
             this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;

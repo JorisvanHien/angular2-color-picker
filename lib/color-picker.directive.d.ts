@@ -113,6 +113,7 @@ export declare class DialogComponent implements OnInit {
     setDialog(instance: any, elementRef: ElementRef, color: any, cpPosition: string, cpPositionOffset: string, cpPositionRelativeToArrow: boolean, cpOutputFormat: string, cpPresetLabel: string, cpPresetColors: Array<string>, cpCancelButton: boolean, cpCancelButtonClass: string, cpCancelButtonText: string, cpOKButton: boolean, cpOKButtonClass: string, cpOKButtonText: string, cpHeight: string, cpWidth: string, cpIgnoredElements: any, cpDialogDisplay: string, cpSaveClickOutside: boolean, cpAlphaChannel: string): void;
     ngOnInit(): void;
     setInitialColor(color: any): void;
+    setPresetConfig(cpPresetLabel: string, cpPresetColors: Array<string>): void;
     openDialog(color: any, emit?: boolean): void;
     cancelColor(): void;
     oKColor(): void;
