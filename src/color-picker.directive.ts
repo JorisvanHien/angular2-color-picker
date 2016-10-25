@@ -60,9 +60,11 @@ export class ColorPickerDirective implements OnInit, OnChanges {
             }
             this.ignoreChanges = false;
         }
-        if (changes.presetLabel || changes.presetColors) {
+        if (changes.cpPresetLabel || changes.cpPresetColors) {
+          console.log("EEE");
             if (this.dialog) {
-              this.dialog.setPresetConfig(changes.presetLabel, changes.presetColors);
+              console.log("UPDATE");
+              this.dialog.setPresetConfig(this.cpPresetLabel, this.cpPresetColors);
             }
         }
     }
