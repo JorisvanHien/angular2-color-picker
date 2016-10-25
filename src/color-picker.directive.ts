@@ -1,4 +1,4 @@
-import {Component, OnChanges, Directive, Input, Output, ViewContainerRef, ElementRef, EventEmitter, OnInit, ViewChild} from '@angular/core';
+import {Component, OnChanges, Directive, Input, Output, ViewContainerRef, ElementRef, EventEmitter, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {ColorPickerService} from './color-picker.service';
 import {Rgba, Hsla, Hsva, SliderPosition, SliderDimension} from './classes';
 import {NgModule, Compiler, ReflectiveInjector} from '@angular/core';
@@ -45,6 +45,7 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: any): void {
+      console.log(changes);
         if (changes.cpToggle) {
             if (changes.cpToggle.currentValue) this.openDialog();
             if (!changes.cpToggle.currentValue && this.dialog) this.dialog.closeColorPicker();
@@ -58,6 +59,11 @@ export class ColorPickerDirective implements OnInit, OnChanges {
 
             }
             this.ignoreChanges = false;
+        }
+        if (changes.presetLabel || changes.presetColors) {
+            if (this.dialog) {
+              this.dialog.setPresetConfig(changes.presetLabel, changes.presetColors);
+            }
         }
     }
 
@@ -203,7 +209,7 @@ export class SliderDirective {
     styleUrls: ['./templates/default/color-picker.css']
 })
 
-export class DialogComponent implements OnInit {
+export class DialogComponent implements OnInit, AfterViewInit {
     private hsva: Hsva;
     private rgbaText: Rgba;
     private hslaText: Hsla;
@@ -253,7 +259,7 @@ export class DialogComponent implements OnInit {
 
     @ViewChild('dialogPopup') dialogElement: any;
 
-    constructor(private el: ElementRef, private service: ColorPickerService) { }
+    constructor(private el: ElementRef, private cdr : ChangeDetectorRef, private service: ColorPickerService) { }
 
     setDialog(instance: any, elementRef: ElementRef, color: any, cpPosition: string, cpPositionOffset: string,
         cpPositionRelativeToArrow: boolean, cpOutputFormat: string, cpPresetLabel: string, cpPresetColors: Array<string>,
@@ -280,6 +286,9 @@ export class DialogComponent implements OnInit {
         this.cpOKButtonText = cpOKButtonText;
         this.cpHeight = parseInt(cpHeight);
         this.cpWidth = parseInt(cpWidth);
+        if (!this.cpWidth) {
+            this.cpWidth = elementRef.nativeElement.offsetWidth;
+        }
         this.cpIgnoredElements = cpIgnoredElements;
         this.cpDialogDisplay = cpDialogDisplay;
         if (this.cpDialogDisplay === 'inline') {
@@ -291,6 +300,7 @@ export class DialogComponent implements OnInit {
     }
 
     ngOnInit() {
+      console.log("IN");
         let alphaWidth = this.alphaSlider.nativeElement.offsetWidth;
         let hueWidth = this.hueSlider.nativeElement.offsetWidth;
         this.sliderDimMax = new SliderDimension(hueWidth, this.cpWidth, 130, alphaWidth);
@@ -307,13 +317,26 @@ export class DialogComponent implements OnInit {
         this.openDialog(this.initialColor, false);
     }
 
+
+    ngAfterViewInit() {
+      console.log("AF");
+        if (this.cpWidth != 230) {
+          let alphaWidth = this.alphaSlider.nativeElement.offsetWidth;
+          let hueWidth = this.hueSlider.nativeElement.offsetWidth;
+          this.sliderDimMax = new SliderDimension(hueWidth, this.cpWidth, 130, alphaWidth);
+
+          this.update(false);
+          this.cdr.detectChanges();
+        }
+    }
+
     setInitialColor(color: any) {
         this.initialColor = color;
     }
 
     setPresetConfig(cpPresetLabel: string, cpPresetColors: Array<string>) {
-      this.cpPresetLabel = cpPresetLabel;
-      this.cpPresetColors = cpPresetColors;
+        this.cpPresetLabel = cpPresetLabel;
+        this.cpPresetColors = cpPresetColors;
     }
 
     openDialog(color: any, emit: boolean = true) {
@@ -414,9 +437,6 @@ export class DialogComponent implements OnInit {
             this.top = boxDirective.top;
             this.left = boxDirective.left;
             this.position = 'fixed';
-        }
-        if (!this.cpWidth) {
-            this.cpWidth = boxDirective.width;
         }
         if (this.cpPosition === 'left') {
             this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
