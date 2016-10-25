@@ -45,7 +45,6 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: any): void {
-      console.log(changes);
         if (changes.cpToggle) {
             if (changes.cpToggle.currentValue) this.openDialog();
             if (!changes.cpToggle.currentValue && this.dialog) this.dialog.closeColorPicker();
@@ -61,10 +60,8 @@ export class ColorPickerDirective implements OnInit, OnChanges {
             this.ignoreChanges = false;
         }
         if (changes.cpPresetLabel || changes.cpPresetColors) {
-          console.log("EEE");
             if (this.dialog) {
-              console.log("UPDATE");
-              this.dialog.setPresetConfig(this.cpPresetLabel, this.cpPresetColors);
+                this.dialog.setPresetConfig(this.cpPresetLabel, this.cpPresetColors);
             }
         }
     }
@@ -378,7 +375,6 @@ export class DialogComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-      console.log("IN");
         let alphaWidth = this.alphaSlider.nativeElement.offsetWidth;
         let hueWidth = this.hueSlider.nativeElement.offsetWidth;
         this.sliderDimMax = new SliderDimension(hueWidth, this.cpWidth, 130, alphaWidth);
@@ -395,9 +391,7 @@ export class DialogComponent implements OnInit, AfterViewInit {
         this.openDialog(this.initialColor, false);
     }
 
-
     ngAfterViewInit() {
-      console.log("AF");
         if (this.cpWidth != 230) {
           let alphaWidth = this.alphaSlider.nativeElement.offsetWidth;
           let hueWidth = this.hueSlider.nativeElement.offsetWidth;
