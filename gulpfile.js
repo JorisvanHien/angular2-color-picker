@@ -1,3 +1,4 @@
+var exec = require('child_process').exec;
 var gulp = require('gulp');
 var del = require('del');
 var tsc = require('gulp-typescript');
@@ -27,16 +28,25 @@ gulp.task('createts', function () {
             .pipe(gulp.dest('lib'));
 });
 
-gulp.task('compile:lib', function () {
-    var r = gulp.src(['lib/**/*.ts', 'node_modules/@types/!(vinyl)/*.d.ts'])
-            .pipe(sourcemaps.init())
-            .pipe(tsc(tscConfig));
-    r.dts.pipe(gulp.dest('lib'));
-    r.js.pipe(uglify()).pipe(gulp.dest('lib'));
-
-    return r.pipe(sourcemaps.write('.'))
-            .pipe(gulp.dest('lib'));
+gulp.task('compile:lib', function (cb) {
+  exec('ngc -p tsconfig.json', function (err, stdout, stderr) {
+    if (stdout) console.log(stdout);
+    if (stderr) console.error(stderr);
+    cb(err);
+  });
 });
+
+
+// gulp.task('compile:lib', function () {
+//     var r = gulp.src(['lib/**/*.ts', 'node_modules/@types/!(vinyl)/*.d.ts'])
+//             .pipe(sourcemaps.init())
+//             .pipe(tsc(tscConfig));
+//     r.dts.pipe(gulp.dest('lib'));
+//     r.js.pipe(uglify()).pipe(gulp.dest('lib'));
+// 
+//     return r.pipe(sourcemaps.write('.'))
+//             .pipe(gulp.dest('lib'));
+// });
 
 gulp.task('compile:index', function () {
     var r = gulp.src(['index.ts', 'node_modules/@types/!(vinyl)/*.d.ts'])
@@ -50,11 +60,11 @@ gulp.task('compile:index', function () {
 });
 
 gulp.task('clean:postcompile', function () {
-    return del.sync('src/templates/default/color-picker.css');
+    return del.sync(['src/templates/default/color-picker.css', 'lib/*[!\.][!d].ts']);
 });
 
 gulp.task('default', function (callback) {
-    runSequence('clean', 'sass', 'createts', 'compile:lib', 'compile:index', 'clean:postcompile', callback);
+    runSequence('clean', 'sass', 'createts', 'compile:lib', 'clean:postcompile', callback);
 });
 
 //copy the library to example/node_modules/angular2-color-picker and examples_webpack/node_modules/angular2-color-picker
