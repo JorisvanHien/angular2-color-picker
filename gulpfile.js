@@ -64,7 +64,7 @@ gulp.task('clean:postcompile', function () {
 });
 
 gulp.task('default', function (callback) {
-    runSequence('clean', 'sass', 'createts', 'compile:lib', 'clean:postcompile', callback);
+    runSequence('clean', 'sass', 'createts', 'compile:lib', 'compile:index', 'clean:postcompile', callback);
 });
 
 //copy the library to example/node_modules/angular2-color-picker and examples_webpack/node_modules/angular2-color-picker
