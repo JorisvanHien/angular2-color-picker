@@ -1,7 +1,7 @@
 import {Component, OnChanges, Directive, Input, Output, ViewContainerRef, ElementRef, EventEmitter, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {ColorPickerService} from './color-picker.service';
 import {Rgba, Hsla, Hsva, SliderPosition, SliderDimension} from './classes';
-import {NgModule, Compiler, ReflectiveInjector} from '@angular/core';
+import {NgModule, Compiler, ReflectiveInjector, ComponentFactoryResolver} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 @Directive({
@@ -89,7 +89,9 @@ export class ColorPickerDirective implements OnInit, OnChanges {
             const cmpRef = this.vcRef.createComponent(compFactory, 0, injector, []);
             cmpRef.instance.setDialog(this, this.el, this.colorPicker, this.cpPosition, this.cpPositionOffset,
                 this.cpPositionRelativeToArrow, this.cpOutputFormat, this.cpPresetLabel, this.cpPresetColors,
-                this.cpCancelButton, this.cpCancelButtonClass, this.cpCancelButtonText, this.cpHeight, this.cpWidth, this.cpIgnoredElements);
+                this.cpCancelButton, this.cpCancelButtonClass, this.cpCancelButtonText, this.cpOKButton,
+                this.cpOKButtonClass, this.cpOKButtonText, this.cpHeight, this.cpWidth, this.cpIgnoredElements,
+                this.cpDialogDisplay, this.cpSaveClickOutside, this.cpAlphaChannel);
             this.dialog = cmpRef.instance;
         } else if (this.dialog) {
             this.dialog.openDialog(this.colorPicker);
