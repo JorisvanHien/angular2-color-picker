@@ -9,6 +9,7 @@ import {ColorPickerDirective, TextDirective, SliderDirective, DialogComponent} f
     imports: [CommonModule],
     providers: [ColorPickerService],
     declarations: [ColorPickerDirective, TextDirective, SliderDirective, DialogComponent],
-    exports: [ColorPickerDirective]
+    exports: [ColorPickerDirective],
+    entryComponents: [DialogComponent]
 })
 export class ColorPickerModule {}

@@ -32,7 +32,7 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     private dialog: any;
     private created: boolean;
 
-    constructor(private compiler: Compiler, private vcRef: ViewContainerRef, private el: ElementRef, private service: ColorPickerService) {
+    constructor(private vcRef: ViewContainerRef, private el: ElementRef, private service: ColorPickerService, private cfr: ComponentFactoryResolver) {
         this.created = false;
     }
 
@@ -60,16 +60,13 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     openDialog() {
         if (!this.created) {
             this.created = true;
-            this.compiler.compileModuleAndAllComponentsAsync(DynamicCpModule)
-                .then(factory => {
-                    const compFactory = factory.componentFactories.find(x => x.componentType === DialogComponent);
-                    const injector = ReflectiveInjector.fromResolvedProviders([], this.vcRef.parentInjector);
-                    const cmpRef = this.vcRef.createComponent(compFactory, 0, injector, []);
-                    cmpRef.instance.setDialog(this, this.el, this.colorPicker, this.cpPosition, this.cpPositionOffset,
-                        this.cpPositionRelativeToArrow, this.cpOutputFormat, this.cpPresetLabel, this.cpPresetColors,
-                        this.cpCancelButton, this.cpCancelButtonClass, this.cpCancelButtonText, this.cpHeight, this.cpWidth, this.cpIgnoredElements);
-                    this.dialog = cmpRef.instance;
-                });
+            const compFactory = this.cfr.resolveComponentFactory(DialogComponent);
+            const injector = ReflectiveInjector.fromResolvedProviders([], this.vcRef.parentInjector);
+            const cmpRef = this.vcRef.createComponent(compFactory, 0, injector, []);
+            cmpRef.instance.setDialog(this, this.el, this.colorPicker, this.cpPosition, this.cpPositionOffset,
+                this.cpPositionRelativeToArrow, this.cpOutputFormat, this.cpPresetLabel, this.cpPresetColors,
+                this.cpCancelButton, this.cpCancelButtonClass, this.cpCancelButtonText, this.cpHeight, this.cpWidth, this.cpIgnoredElements);
+            this.dialog = cmpRef.instance;
         } else if (this.dialog) {
             this.dialog.updateDialog(this.colorPicker, this.cpHeight, this.cpWidth);
         }
